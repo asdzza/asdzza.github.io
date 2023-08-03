@@ -174,7 +174,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/srtp/" style="color: #ff7d73">srtp</a>
+                <a href="/tags/srtp/" style="color: #00a596">srtp</a>
             </span>
             
         </span>
@@ -182,7 +182,9 @@
     </div>
     
     <div class="content" v-pre>
-        <h2 id="lime-文本解释的理解与复现"><a href="#lime-文本解释的理解与复现" class="headerlink" title="lime 文本解释的理解与复现"></a>lime 文本解释的理解与复现</h2><h3 id="1、关于LIME："><a href="#1、关于LIME：" class="headerlink" title="1、关于LIME："></a>1、关于LIME：</h3><p>Local interpretable model-agnostic explanations (LIME)是通过建立一个局部代理模型来近似解释黑盒模型的预测结果。且并不仅仅是基于模型的局部数据来构建代理模型，还会产生一些数据扰动 (data variations)，基于原始扰动的数据以及黑盒模型的预测值，建立一个可解释的白盒模型，比如Lasso，决策树等。</p>
+        <h2 id="lime-文本解释的理解与复现"><a href="#lime-文本解释的理解与复现" class="headerlink" title="lime 文本解释的理解与复现"></a>lime 文本解释的理解与复现</h2><span id="more"></span>
+
+<h3 id="1、关于LIME："><a href="#1、关于LIME：" class="headerlink" title="1、关于LIME："></a>1、关于LIME：</h3><p>Local interpretable model-agnostic explanations (LIME)是通过建立一个局部代理模型来近似解释黑盒模型的预测结果。且并不仅仅是基于模型的局部数据来构建代理模型，还会产生一些数据扰动 (data variations)，基于原始扰动的数据以及黑盒模型的预测值，建立一个可解释的白盒模型，比如Lasso，决策树等。</p>
 <h3 id="2、-仿照论文进行简单实验"><a href="#2、-仿照论文进行简单实验" class="headerlink" title="2、 仿照论文进行简单实验"></a>2、 仿照论文进行简单实验</h3><p><strong>所用数据</strong>： <em><a target="_blank" rel="noopener" href="http://scikit-learn.org/stable/datasets/#the-20-newsgroups-text-dataset">20 newsgroups dataset</a>.</em></p>
 <p>（1）实验所需要用到的库：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> __future__ <span class="token keyword">import</span> print_function
