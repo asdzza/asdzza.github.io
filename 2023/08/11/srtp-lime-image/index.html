@@ -182,10 +182,12 @@
     </div>
     
     <div class="content" v-pre>
-        <h2 id="LIME算法：图像分类解释器"><a href="#LIME算法：图像分类解释器" class="headerlink" title="LIME算法：图像分类解释器"></a>LIME算法：图像分类解释器</h2><span id="more"></span>
-
-<h3 id="引言："><a href="#引言：" class="headerlink" title="引言："></a>引言：</h3><p>在上一篇博客<a target="_blank" rel="noopener" href="https://asdzza.github.io/2023/08/03/srtp-lime/"><em>srtp-lime文本解释的理解与复现</em></a>中，我整理了LIME算法的原理及在文本分类模型中的应用。本篇博客主要介绍基于keras框架下的图像分析。</p>
-<h3 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h3><p>1、要实现LIME解释器在图像分类模型中的应用，首先要有一个已经建模完成的图像分类模型，这里参考lime算法的GitHub实例，基于keras框架下载Google Inception net-v3深度神经网络模型。</p>
+        <h2 id="LIME算法：图像分类解释器">LIME算法：图像分类解释器</h2>
+<span id="more"></span>
+<h3 id="引言：">引言：</h3>
+<p>在上一篇博客<a target="_blank" rel="noopener" href="https://asdzza.github.io/2023/08/03/srtp-lime/"><em>srtp-lime文本解释的理解与复现</em></a>中，我整理了LIME算法的原理及在文本分类模型中的应用。本篇博客主要介绍基于keras框架下的图像分析。</p>
+<h3 id="具体步骤">具体步骤</h3>
+<p>1、要实现LIME解释器在图像分类模型中的应用，首先要有一个已经建模完成的图像分类模型，这里参考lime算法的GitHub实例，基于keras框架下载Google Inception net-v3深度神经网络模型。</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#加载需要的包</span>
 <span class="token keyword">import</span> os
 <span class="token keyword">import</span> keras
@@ -199,7 +201,6 @@
 
 <span class="token comment">#下载Google Inception net-v3深度神经网络模型</span>
 inet_model <span class="token operator">=</span> inc_net<span class="token punctuation">.</span>InceptionV3<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>2、编写transform_img_fn函数，完成对图像的数据预处理：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#对待分类图像进行数据预处理</span>
 <span class="token keyword">def</span> <span class="token function">transform_img_fn</span><span class="token punctuation">(</span>path_list<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -211,17 +212,15 @@ inet_model <span class="token operator">=</span> inc_net<span class="token punct
         x <span class="token operator">=</span> inc_net<span class="token punctuation">.</span>preprocess_input<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
         out<span class="token punctuation">.</span>append<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
     <span class="token keyword">return</span> np<span class="token punctuation">.</span>vstack<span class="token punctuation">(</span>out<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>之后读取图像，输出预测结果</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">images <span class="token operator">=</span> transform_img_fn<span class="token punctuation">(</span><span class="token punctuation">[</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token string">'./'</span><span class="token punctuation">,</span><span class="token string">'cat.jpg'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token comment">#加载图像后直接进行数据处理</span>
 plt<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span>images<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">/</span> <span class="token number">2</span> <span class="token operator">+</span> <span class="token number">0.5</span><span class="token punctuation">)</span>
 preds <span class="token operator">=</span> inet_model<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>images<span class="token punctuation">)</span>
 <span class="token keyword">for</span> x <span class="token keyword">in</span> decode_predictions<span class="token punctuation">(</span>preds<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token comment">#输出预测结果</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>这里读取的图像是表哥家的可爱小猫:cat:</p>
-<p><img src="/.com//cat.jpg" alt="cat"></p>
-<p><img src="/.com//1.jpg" alt="1"></p>
+<p>这里读取的图像是表哥家的可爱小猫🐱</p>
+<p><img src="/2023/08/11/srtp-lime-image/cat.jpg" alt="cat"></p>
+<p><img src="/2023/08/11/srtp-lime-image/1.jpg" alt="1"></p>
 <p>结果如上图所示</p>
 <p>3、查看解释结果</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#加载lime包</span>
@@ -236,9 +235,8 @@ explanation <span class="token operator">=</span> explainer<span class="token pu
 temp<span class="token punctuation">,</span> mask <span class="token operator">=</span> explanation<span class="token punctuation">.</span>get_image_and_mask<span class="token punctuation">(</span>explanation<span class="token punctuation">.</span>top_labels<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> positive_only<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> num_features<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span> hide_rest<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
 plt<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span>mark_boundaries<span class="token punctuation">(</span>temp <span class="token operator">/</span> <span class="token number">2</span> <span class="token operator">+</span> <span class="token number">0.5</span><span class="token punctuation">,</span> mask<span class="token punctuation">)</span><span class="token punctuation">)</span>
 plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>这里我们查看预测概率最高结果：波斯猫的解释情况</p>
-<p><img src="/.com//2.jpg" alt="2"></p>
+<p><img src="/2023/08/11/srtp-lime-image/2.jpg" alt="2"></p>
 
     </div>
     

