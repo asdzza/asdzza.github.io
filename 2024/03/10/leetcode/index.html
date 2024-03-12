@@ -174,7 +174,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/algorithm/" style="color: #00a596">algorithm</a>
+                <a href="/tags/algorithm/" style="color: #03a9f4">algorithm</a>
             </span>
             
         </span>
@@ -199,6 +199,82 @@
 <p>为什么要保存一下这个节点呢，因为接下来要改变 cur-&gt;next 的指向了，将cur-&gt;next 指向pre ，此时已经反转了第一个节点了。</p>
 <p>接下来，就是循环走如下代码逻辑了，继续移动pre和cur指针。</p>
 <p>最后，cur 指针已经指向了null，循环结束，链表也反转完毕了。 此时我们return pre指针就可以了，pre指针就指向了新的头结点。</p>
+<p><img src="/2024/03/10/leetcode/206.gif" alt="206"></p>
+<p><strong><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/palindrome-linked-list/">234. 回文链表</a></strong></p>
+<p>若使用O(1)空间复杂度解决问题，需要将链表的后半部分翻转：使用快慢指针找到链表中间节点以及尾节点，反转后将前后两部分进行比较，比较后还原链表。</p>
+<p>参考代码如下：</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">class Solution &#123;
+public:
+    bool isPalindrome(ListNode* head) &#123;
+        if (head &#x3D;&#x3D; nullptr) &#123;
+            return true;
+        &#125;
+
+        &#x2F;&#x2F; 找到前半部分链表的尾节点并反转后半部分链表
+        ListNode* firstHalfEnd &#x3D; endOfFirstHalf(head);
+        ListNode* secondHalfStart &#x3D; reverseList(firstHalfEnd-&gt;next);
+
+        &#x2F;&#x2F; 判断是否回文
+        ListNode* p1 &#x3D; head;
+        ListNode* p2 &#x3D; secondHalfStart;
+        bool result &#x3D; true;
+        while (result &amp;&amp; p2 !&#x3D; nullptr) &#123;
+            if (p1-&gt;val !&#x3D; p2-&gt;val) &#123;
+                result &#x3D; false;
+            &#125;
+            p1 &#x3D; p1-&gt;next;
+            p2 &#x3D; p2-&gt;next;
+        &#125;        
+
+        &#x2F;&#x2F; 还原链表并返回结果
+        firstHalfEnd-&gt;next &#x3D; reverseList(secondHalfStart);
+        return result;
+    &#125;
+
+    ListNode* reverseList(ListNode* head) &#123;
+        ListNode* prev &#x3D; nullptr;
+        ListNode* curr &#x3D; head;
+        while (curr !&#x3D; nullptr) &#123;
+            ListNode* nextTemp &#x3D; curr-&gt;next;
+            curr-&gt;next &#x3D; prev;
+            prev &#x3D; curr;
+            curr &#x3D; nextTemp;
+        &#125;
+        return prev;
+    &#125;
+
+    ListNode* endOfFirstHalf(ListNode* head) &#123;
+        ListNode* fast &#x3D; head;
+        ListNode* slow &#x3D; head;
+        while (fast-&gt;next !&#x3D; nullptr &amp;&amp; fast-&gt;next-&gt;next !&#x3D; nullptr) &#123;
+            fast &#x3D; fast-&gt;next-&gt;next;
+            slow &#x3D; slow-&gt;next;
+        &#125;
+        return slow;
+    &#125;
+&#125;;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+<p><strong><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/linked-list-cycle/">141. 环形链表</a></strong></p>
+<p>使用<strong>快慢指针法</strong>，若存在环则快慢指针一定会相遇。</p>
+<p>代码：</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">class Solution &#123;
+public:
+    bool hasCycle(ListNode *head) &#123;
+        ListNode* fast &#x3D; head;
+        ListNode* slow &#x3D; head;
+        while(fast &amp;&amp; fast-&gt;next)&#123;
+            fast &#x3D; fast-&gt;next-&gt;next;
+            slow &#x3D; slow-&gt;next;
+            if(slow &#x3D;&#x3D; fast) return true;
+        &#125;
+        return false;
+    &#125;
+&#125;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
     </div>
     
