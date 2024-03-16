@@ -174,7 +174,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/algorithm/" style="color: #ff7d73">algorithm</a>
+                <a href="/tags/algorithm/" style="color: #ffa2c4">algorithm</a>
             </span>
             
         </span>
@@ -271,7 +271,7 @@ public:
 &#125;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/linked-list-cycle-ii/">142. 环形链表 II</a></strong></p>
 <p>在快慢指针的基础上进行推导计算：</p>
-<p><img src="/2024/03/10/leetcode/C:%5CUsers%5C12555%5Cblog%5Csource_posts%5Cleetcode%5C142.png" alt="142"></p>
+<p><img src="/2024/03/10/leetcode/142.png" alt="142"></p>
 <p>相遇时： slow指针走过的节点数为: <code>x + y</code>， fast指针走过的节点数：<code>x + y + n (y + z)</code>，n为fast指针在环内走了n圈才遇到slow指针， （y+z）为 一圈内节点的个数A。</p>
 <p>因为fast指针是一步走两个节点，slow指针一步走一个节点， 所以 fast指针走过的节点数 = slow指针走过的节点数 * 2：</p>
 <pre class="line-numbers language-none"><code class="language-none">(x + y) * 2 &#x3D; x + y + n (y + z)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -284,6 +284,107 @@ public:
 <p>这道题成功做出来了，注意new的使用，在终点时链表要指向NULL。</p>
 <p><strong><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/">19. 删除链表的倒数第 N 个结点</a></strong></p>
 <p>注意单独判断删除节点是头节点（即l == n）的情况。</p>
+<p><strong><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/swap-nodes-in-pairs/">24. 两两交换链表中的节点</a></strong></p>
+<p>添加一个虚拟头节点，可简化分类情况。</p>
+<p><strong><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sort-list/">148. 排序链表</a></strong></p>
+<p>要求：在 <code>O(n log n)</code> 时间复杂度和常数级空间复杂度下，对链表进行排序</p>
+<p>针对链表排序，使用归并排序的做法。用快慢指针法找到链表的中点并对链表进行递归的划分，并同样采用递归的方法对子链表排序后进行合并，最终得到完整排序的链表。</p>
+<p>代码如下所示：</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">class Solution &#123;
+public:
+    ListNode* sortList(ListNode* head) &#123;
+        if(!head || head-&gt;next &#x3D;&#x3D; NULL) return head;
+        ListNode* fast &#x3D; head,*slow &#x3D; head,*mid &#x3D; head;
+        while(fast &amp;&amp; fast-&gt;next)&#123;
+            mid &#x3D; slow;
+            slow &#x3D; slow -&gt; next;
+            fast &#x3D; fast -&gt; next-&gt; next;
+        &#125;
+        mid -&gt; next &#x3D; NULL;
+        return merge(sortList(head),sortList(slow));
+    &#125;
+    ListNode* merge(ListNode* list1, ListNode* list2)&#123;
+        if(!list1) return list2;
+        if(!list2) return list1;
+        if(list1-&gt;val &lt; list2-&gt;val)&#123;
+            list1 -&gt; next &#x3D; merge(list1-&gt;next,list2);
+            return list1;
+        &#125;else&#123;
+            list2 -&gt; next &#x3D; merge(list1,list2-&gt;next);
+            return list2;
+        &#125;
+    &#125;
+&#125;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/lru-cache/">146. LRU 缓存</a></strong></p>
+<p>使用哈希表和双向链表来实现LRU缓存，每次更新的节点都放在链表头部，最久没用的节点放在链表尾部。并添加一个空的头节点和尾节点用于标志。</p>
+<p>代码如下：</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">class Node&#123;
+public:
+    int value;
+    int key;
+    Node* prev;
+    Node* next;
+    Node(int key,int val): key(key),value(val), prev(nullptr), next(nullptr)&#123;&#125;
+&#125;;
+
+class LRUCache &#123;
+private:
+    unordered_map&lt;int, Node*&gt; cache;
+    int capacity;
+    int size;
+    Node* dummy;
+    Node* tail;
+public:
+    LRUCache(int capacity) : capacity(capacity) , size(0)&#123;
+        dummy &#x3D; new Node(0,0);
+        tail &#x3D; new Node(0,0);
+        dummy -&gt; next &#x3D; tail;
+        tail -&gt; prev &#x3D; dummy;
+    &#125;
+    void remove(Node *x)&#123;
+        x-&gt;prev-&gt;next &#x3D; x-&gt;next;
+        x-&gt;next-&gt;prev &#x3D; x-&gt;prev;
+    &#125;
+    void addnode(Node *x)&#123;
+        x-&gt;prev &#x3D; dummy;
+        x-&gt;next &#x3D; dummy-&gt;next;
+        dummy-&gt;next &#x3D; x;
+        x-&gt;next-&gt;prev &#x3D; x;
+    &#125;
+    int get(int key) &#123;
+        auto it &#x3D; cache.find(key);
+        if(it &#x3D;&#x3D; cache.end())&#123;
+            return -1;
+        &#125;
+        Node* tmp &#x3D; it-&gt;second;
+        remove(tmp);
+        addnode(tmp);
+        return tmp -&gt; value;
+    &#125;    
+    void put(int key, int value) &#123;
+        auto it &#x3D; cache.find(key);
+        if(it !&#x3D; cache.end())&#123;
+            Node* tmp &#x3D; it-&gt;second;
+            tmp -&gt; key &#x3D; key;
+            tmp -&gt; value &#x3D; value;
+            remove(tmp);
+            addnode(tmp);
+        &#125;else&#123;
+            Node* tmp &#x3D; new Node(key,value);
+            cache[key] &#x3D; tmp;
+            addnode(tmp);
+            size++;
+            if(size &gt; capacity)&#123;
+                cache.erase(tail-&gt;prev-&gt;key);
+                remove(tail-&gt;prev);
+                size--;
+            &#125;
+        &#125;      
+    &#125;
+&#125;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="二叉树">二叉树</h3>
+<p><strong><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-depth-of-binary-tree/">104. 二叉树的最大深度</a></strong></p>
+<p>DFS深度优先搜索：递归，每层深度都是1+左右子树最大深度。</p>
 
     </div>
     
